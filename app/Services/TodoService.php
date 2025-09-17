@@ -9,17 +9,14 @@ use InvalidArgumentException;
 
 class TodoService
 {
-    /**
-     * Membuat data todo baru dari data yang sudah divalidasi.
-     */
+    // Membuat data todo baru dari data yang sudah divalidasi.
     public function createTodo(array $validatedData): Todo
     {
         return Todo::create($validatedData);
     }
 
-    /**
-     * Mengambil data untuk laporan Excel dengan filter.
-     */
+
+    // Mengambil data untuk laporan Excel dengan filter.
     public function getTodosForReport(array $filters): Collection
     {
         $query = Todo::query();
@@ -48,9 +45,7 @@ class TodoService
         return $query->get();
     }
 
-    /**
-     * Mengambil data agregat untuk grafik berdasarkan tipe.
-     */
+    // Mengambil data agregat untuk grafik berdasarkan tipe.
     public function getChartData(string $type)
     {
         if (!in_array($type, ['status', 'priority', 'assignee'])) {
@@ -80,7 +75,7 @@ class TodoService
             ->groupBy('assignee')
             ->get();
 
-        // Mengubah format agar sesuai dengan ekspektasi JSON
+        // Mengubah format agar sesuai dengan JSON yang dibutuhkan
         return $data->mapWithKeys(function ($item) {
             return [$item->assignee => [
                 'total_todos' => (int) $item->total_todos,
