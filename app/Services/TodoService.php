@@ -57,9 +57,38 @@ class TodoService
             throw new InvalidArgumentException('Invalid chart type requested.');
         }
 
+        if ($type == 'assignee') {
+        return $this->getAssigneeChartData();
+    }
+
         return Todo::query()
             ->select($type, DB::raw('count(*) as total'))
             ->groupBy($type)
             ->pluck('total', $type);
     }
+
+    private function getAssigneeChartData()
+    {
+        $data = Todo::query()
+            ->select(
+                'assignee',
+                DB::raw('count(*) as total_todos'),
+                DB::raw("sum(case when status = 'Pending' then 1 else 0 end) as total_pending_todos"),
+                DB::raw("sum(case when status = 'Completed' then 1 else 0 end) as total_completed_todos"),
+                DB::raw("sum(case when status = 'Completed' then time_tracked else 0 end) as total_timetracked_completed_todos")
+            )
+            ->groupBy('assignee')
+            ->get();
+
+        // Mengubah format agar sesuai dengan ekspektasi JSON
+        return $data->mapWithKeys(function ($item) {
+            return [$item->assignee => [
+                'total_todos' => (int) $item->total_todos,
+                'total_pending_todos' => (int) $item->total_pending_todos,
+                'total_completed_todos' => (int) $item->total_completed_todos,
+                'total_timetracked_completed_todos' => (int) $item->total_timetracked_completed_todos,
+            ]];
+        });
+    }
+
 }
