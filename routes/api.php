@@ -1,12 +1,17 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\todoController;
+use App\Http\Controllers\Api\TodoController;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json(['message' => 'API is running']);
 });
 
-Route::post('/todos', [todoController::class, 'store']);
-Route::get('/todos/report', [todoController::class, 'generateReport']);
-Route::get('/chart', [todoController::class, 'getChartData']);
+Route::post('/todos', [TodoController::class, 'store']);
+Route::get('/todos/report', [TodoController::class, 'generateReport']);
+Route::get('/chart', [TodoController::class, 'getChartData']);
