@@ -62,17 +62,19 @@ class TodosExport implements FromCollection, WithHeadings, WithMapping, WithEven
                 $totalTimeTracked = $this->todos->sum('time_tracked');
 
                 // Menentukan baris setelah data terakhir
-                $summaryRowNumber = $this->todos->count() + 2;
+                $summaryRowNumber = $this->todos->count() + 3;
+
+                $event->sheet->append([' ']);
 
                 // Menambahkan baris ringkasan
                 $event->sheet->append([
-                    'Summary', '', '', '', '', ''
+                    'Summary'
                 ]);
                 $event->sheet->append([
-                    'Total number of todos:', $totalTodos, '', '', '', ''
+                    'Total number of todos:', $totalTodos,
                 ]);
                 $event->sheet->append([
-                    'Total time_tracked across all todos:', $totalTimeTracked, '', '', '', ''
+                    'Total time_tracked across all todos:', $totalTimeTracked,
                 ]);
 
                 // Buat heading jadi Bold

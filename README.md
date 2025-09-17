@@ -1,61 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Backend Technical Test - Todo List API
+Proyek ini adalah implementasi REST API untuk aplikasi Todo List sebagai bagian dari Technical Test Backend Developer di PT. Dynamic Talenta Navigator (Talenavi).
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi ini dibangun menggunakan Laravel Framework dan menyediakan serangkaian endpoint untuk mengelola tugas, menghasilkan laporan dalam format Excel yang detail, serta menyediakan data agregat untuk kebutuhan visualisasi grafik.
 
-## About Laravel
+Arsitektur yang digunakan mengimplementasikan best practice seperti Service Layer untuk memisahkan logika bisnis dari controller dan Form Request untuk validasi yang terpusat dan rapi, memastikan kode yang bersih, mudah dikelola, dan tangguh.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Fitur Utama
+Create Todo: Menambahkan data tugas baru dengan validasi input yang ketat.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Excel Report: Mengunduh daftar tugas dalam format .xlsx dengan dukungan filter dinamis serta baris ringkasan di bagian akhir.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Chart Data: Menyediakan data ringkasan (agregat) untuk visualisasi berdasarkan status, prioritas, dan assignee.
 
-## Learning Laravel
+Prasyarat
+PHP >= 8.2
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Composer
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+MySQL (atau database SQL lainnya)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Postman (untuk pengujian API)
 
-## Laravel Sponsors
+🚀 Instalasi & Setup
+Berikut adalah langkah-langkah untuk menjalankan proyek ini di lingkungan lokal.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. Clone Repositori
+   Bash
 
-### Premium Partners
+git clone [URL_REPOSITORI_ANDA]
+cd nama-folder-proyek 2. Install Dependensi
+Gunakan Composer untuk menginstal semua dependensi PHP yang dibutuhkan.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Bash
 
-## Contributing
+composer install 3. Konfigurasi Lingkungan
+Salin file .env.example menjadi .env dan sesuaikan konfigurasinya.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Bash
 
-## Code of Conduct
+cp .env.example .env
+Buka file .env dan atur koneksi database Anda. Pastikan Anda sudah membuat database kosong untuk proyek ini.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Code snippet
 
-## Security Vulnerabilities
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=talenavi_todolist
+DB_USERNAME=root
+DB_PASSWORD= 4. Generate Application Key
+Jalankan perintah Artisan berikut untuk menghasilkan kunci aplikasi yang unik.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Bash
 
-## License
+php artisan key:generate 5. Jalankan Migrasi Database
+Perintah ini akan membuat semua tabel yang dibutuhkan oleh aplikasi di dalam database Anda.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Bash
+
+php artisan migrate 6. Jalankan Server Lokal
+Aplikasi Anda sekarang siap dijalankan.
+
+Bash
+
+php artisan serve
+Secara default, API akan dapat diakses melalui http://127.0.0.1:8000.
+
+📖 Dokumentasi API
+Berikut adalah rincian endpoint yang tersedia.
+
+Base URL: http://127.0.0.1:8000/api
+
+1. Create a New Todo
+   Menambahkan tugas baru ke dalam daftar.
+
+Endpoint: POST /todos
+
+Headers:
+
+Content-Type: application/json
+
+Accept: application/json
+
+Body (raw JSON):
+
+JSON
+
+{
+"title": "Selesaikan Technical Test",
+"assignee": "Nama Anda",
+"due_date": "2025-12-31",
+"time_tracked": 180,
+"status": "In Progress",
+"priority": "High"
+}
+Validasi:
+
+Semua field wajib diisi.
+
+due_date tidak boleh tanggal yang sudah lewat.
+
+status harus salah satu dari: Pending, In Progress, Completed.
+
+priority harus salah satu dari: Low, Medium, High.
+
+Contoh Respons Sukses (201 Created):
+
+JSON
+
+{
+"message": "Todo created successfully",
+"data": {
+"title": "Selesaikan Technical Test",
+"assignee": "Nama Anda",
+"due_date": "2025-12-31",
+"time_tracked": 180,
+"status": "In Progress",
+"priority": "High",
+"updated_at": "2025-09-17T04:55:00.000000Z",
+"created_at": "2025-09-17T04:55:00.000000Z",
+"id": 1
+}
+} 2. Generate Excel Report
+Mengunduh laporan todo dalam format .xlsx. Mendukung filter melalui query parameters.
+
+Endpoint: GET /todos/report
+
+Query Parameters (Opsional):
+
+status: Filter berdasarkan status (e.g., ?status=Completed)
+
+priority: Filter berdasarkan prioritas (e.g., ?priority=High)
+
+assignee: Filter berdasarkan nama assignee (pencarian parsial, e.g., ?assignee=Nama)
+
+due_date_from: Filter tanggal mulai (format YYYY-MM-DD)
+
+due_date_to: Filter tanggal selesai (format YYYY-MM-DD)
+
+Contoh Penggunaan:
+
+GET /api/todos/report (tanpa filter, mengunduh semua data)
+
+GET /api/todos/report?status=Completed&priority=High
+
+Respons Sukses (200 OK):
+
+Akan langsung mengunduh file todos_report.xlsx.
+
+Untuk menguji di Postman, gunakan fitur "Send and Download".
+
+3. Get Chart Data
+   Menyediakan data agregat dalam format JSON untuk visualisasi.
+
+Endpoint: GET /chart
+
+Query Parameters (Wajib):
+
+type: Menentukan jenis ringkasan. Nilai yang valid: status, priority, assignee.
+
+a. Berdasarkan Status
+Request: GET /api/chart?type=status
+
+Contoh Respons Sukses (200 OK):
+
+JSON
+
+{
+"Pending": 5,
+"In Progress": 2,
+"Completed": 10
+}
+b. Berdasarkan Prioritas
+Request: GET /api/chart?type=priority
+
+Contoh Respons Sukses (200 OK):
+
+JSON
+
+{
+"Low": 8,
+"Medium": 7,
+"High": 2
+}
+c. Berdasarkan Assignee
+Request: GET /api/chart?type=assignee
+
+Contoh Respons Sukses (200 OK):
+
+JSON
+
+{
+"Andi": {
+"total_todos": 5,
+"total_pending_todos": 1,
+"total_completed_todos": 4,
+"total_timetracked_completed_todos": 240
+},
+"Budi": {
+"total_todos": 3,
+"total_pending_todos": 2,
+"total_completed_todos": 1,
+"total_timetracked_completed_todos": 60
+}
+}
