@@ -20,7 +20,7 @@ Arsitektur yang digunakan mengimplementasikan _best practice_ seperti **Service 
 
 -   PHP >= 8.2
 -   Composer
--   MySQL (atau database SQL lainnya)
+-   MySQL (beserta Database Explorer seperti HeidiSQL)
 -   Postman (untuk pengujian API)
 
 ---
@@ -30,8 +30,8 @@ Arsitektur yang digunakan mengimplementasikan _best practice_ seperti **Service 
 ### 1. Clone Repositori
 
 ```bash
-git clone [URL_REPOSITORI_ANDA]
-cd nama-folder-proyek
+git clone https://github.com/OnlyHen/todo-list.git
+cd todo-list
 ```
 
 ### 2. Install Dependensi
@@ -54,9 +54,9 @@ Buka file `.env` dan atur koneksi database Anda. Pastikan sudah membuat database
 
 ```env
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=127.0.0.1 #localhost
 DB_PORT=3306
-DB_DATABASE=talenavi_todolist
+DB_DATABASE=talenavi_todolist #nama database anda
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -83,7 +83,7 @@ php artisan migrate
 php artisan serve
 ```
 
-Secara default, API dapat diakses melalui:  
+Untuk simulasi, API dapat diakses melalui localhost:  
 👉 `http://127.0.0.1:8000`
 
 ---
