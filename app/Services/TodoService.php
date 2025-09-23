@@ -68,9 +68,9 @@ class TodoService
             ->select(
                 'assignee',
                 DB::raw('count(*) as total_todos'),
-                DB::raw("sum(case when status = 'Pending' then 1 else 0 end) as total_pending_todos"),
-                DB::raw("sum(case when status = 'Completed' then 1 else 0 end) as total_completed_todos"),
-                DB::raw("sum(case when status = 'Completed' then time_tracked else 0 end) as total_timetracked_completed_todos")
+                DB::raw("sum(case when status = 'pending' then 1 else 0 end) as total_pending_todos"),
+                DB::raw("sum(case when status = 'completed' then 1 else 0 end) as total_completed_todos"),
+                DB::raw("sum(case when status = 'completed' then time_tracked else 0 end) as total_timetracked_completed_todos")
             )
             ->groupBy('assignee')
             ->get();

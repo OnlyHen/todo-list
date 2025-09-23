@@ -27,17 +27,17 @@ class StoreTodoRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'assignee' => 'required|string|max:255',
+            'assignee' => 'sometimes|string|max:255',
             'due_date' => 'required|date|after_or_equal:today',
-            'time_tracked' => 'required|integer|min:0',
-            'status' => [
-                'required',
-                Rule::in(['Pending', 'In Progress', 'Completed']),
-            ],
             'priority' => [
                 'required',
-                Rule::in(['Low', 'Medium', 'High']),
+                Rule::in(['low', 'medium', 'high']),
             ],
+            'time_tracked' => 'sometimes|integer|min:0',
+            'status' => [
+               'sometimes',
+               Rule::in(['pending', 'open', 'in_progress', 'completed']),
+           ],
         ];
     }
 }
